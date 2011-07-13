@@ -1,0 +1,20 @@
+#!/bin/sh
+
+TIMESTAMP=`date "+%b-%d-%Y-%T"`
+
+# Deploy default configuration files
+#-----------------------------------
+
+logger -p local6.notice -t installer "app-protocol-filter-core - installing default configuration"
+
+if [ -e /etc/l7-filter/l7-filter.conf ]; then
+    cp -a /etc/l7-filter/l7-filter.conf /var/clearos/protocol_filter/backup/l7-filter.conf.$TIMESTAMP
+fi
+
+cp /usr/clearos/apps/protocol_filter/deploy/l7-filter.conf /etc/l7-filter/l7-filter.conf
+
+# Set boot policy
+#----------------
+
+logger -p local6.notice -t installer "app-protocol-filter-core - enabling protocol filter"
+/sbin/chkconfig l7-filter on
