@@ -50,7 +50,7 @@ echo form_header(lang('protocol_filter_exception'));
 echo field_input('name', $name, lang('firewall_nickname'));
 echo field_input('ip', $ip, lang('network_ip'));
 
-echo button_set(
+echo field_button_set(
     array(
         form_submit_add('submit'),
         anchor_cancel('/app/protocol_filter/exceptions/')
