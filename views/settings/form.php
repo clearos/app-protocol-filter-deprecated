@@ -75,7 +75,7 @@ foreach ($protocols as $name => $details) {
 // List table
 ///////////////////////////////////////////////////////////////////////////////
 
-echo form_open('/app/protocol_filter/settings');
+echo form_open('protocol_filter/settings');
 
 echo list_table(
     lang('protocol_filter_protocols'),
