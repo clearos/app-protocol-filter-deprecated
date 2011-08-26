@@ -5,7 +5,7 @@
 /////////////////////////////////////////////////////////////////////////////
 
 $app['basename'] = 'protocol_filter';
-$app['version'] = '5.9.9.4';
+$app['version'] = '5.9.9.5';
 $app['release'] = '1';
 $app['vendor'] = 'ClearFoundation';
 $app['packager'] = 'ClearFoundation';
@@ -20,6 +20,8 @@ $app['description'] = lang('protocol_filter_app_description');
 $app['name'] = lang('protocol_filter_app_name');
 $app['category'] = lang('base_category_gateway');
 $app['subcategory'] = lang('base_subcategory_protocol_filter');
+// FIXME
+$app['menu_enabled'] = FALSE;
 
 /////////////////////////////////////////////////////////////////////////////
 // Packaging

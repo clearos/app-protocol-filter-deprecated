@@ -1,9 +1,9 @@
 
 Name: app-protocol-filter
 Group: ClearOS/Apps
-Version: 5.9.9.0
+Version: 5.9.9.5
 Release: 1%{dist}
-Summary: Translation missing (protocol_filter_app_summary)
+Summary: Protocol Filter
 License: GPLv3
 Packager: ClearFoundation
 Vendor: ClearFoundation
@@ -11,18 +11,23 @@ Source: %{name}-%{version}.tar.gz
 Buildarch: noarch
 Requires: %{name}-core = %{version}-%{release}
 Requires: app-base
+Requires: app-network
 
 %description
-Translation missing (protocol_filter_app_long_description)
+Protocol Filter description
 
 %package core
-Summary: Translation missing (protocol_filter_app_summary) - APIs and install
+Summary: Protocol Filter - APIs and install
 Group: ClearOS/Libraries
 License: LGPLv3
 Requires: app-base-core
+Requires: app-network-core
+Requires: app-firewall-core
+Requires: l7-filter-userspace >= 0.12
+Requires: l7-protocols- >= 0.12
 
 %description core
-Translation missing (protocol_filter_app_long_description)
+Protocol Filter description
 
 This package provides the core API and libraries.
 
@@ -34,6 +39,8 @@ This package provides the core API and libraries.
 mkdir -p -m 755 %{buildroot}/usr/clearos/apps/protocol_filter
 cp -r * %{buildroot}/usr/clearos/apps/protocol_filter/
 
+install -d -m 0755 %{buildroot}/var/clearos/protocol_filter
+install -d -m 0755 %{buildroot}/var/clearos/protocol_filter/backup/
 
 %post
 logger -p local6.notice -t installer 'app-protocol-filter - installing'
@@ -73,6 +80,8 @@ exit 0
 %exclude /usr/clearos/apps/protocol_filter/packaging
 %exclude /usr/clearos/apps/protocol_filter/tests
 %dir /usr/clearos/apps/protocol_filter
+%dir /var/clearos/protocol_filter
+%dir /var/clearos/protocol_filter/backup/
 /usr/clearos/apps/protocol_filter/deploy
 /usr/clearos/apps/protocol_filter/language
 /usr/clearos/apps/protocol_filter/libraries
