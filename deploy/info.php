@@ -20,8 +20,13 @@ $app['description'] = lang('protocol_filter_app_description');
 $app['name'] = lang('protocol_filter_app_name');
 $app['category'] = lang('base_category_gateway');
 $app['subcategory'] = lang('base_subcategory_protocol_filter');
-// FIXME
-$app['menu_enabled'] = FALSE;
+
+/////////////////////////////////////////////////////////////////////////////
+// Controllers
+/////////////////////////////////////////////////////////////////////////////
+
+$app['controllers']['protocol_filter']['title'] = lang('protocol_filter_app_name');
+$app['controllers']['exceptions']['title'] = lang('protocol_filter_exceptions');
 
 /////////////////////////////////////////////////////////////////////////////
 // Packaging
