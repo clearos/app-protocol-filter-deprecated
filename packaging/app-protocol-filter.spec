@@ -41,6 +41,7 @@ cp -r * %{buildroot}/usr/clearos/apps/protocol_filter/
 
 install -d -m 0755 %{buildroot}/var/clearos/protocol_filter
 install -d -m 0755 %{buildroot}/var/clearos/protocol_filter/backup/
+install -D -m 0644 packaging/l7-filter.php %{buildroot}/var/clearos/base/daemon/l7-filter.php
 
 %post
 logger -p local6.notice -t installer 'app-protocol-filter - installing'
@@ -85,3 +86,4 @@ exit 0
 /usr/clearos/apps/protocol_filter/deploy
 /usr/clearos/apps/protocol_filter/language
 /usr/clearos/apps/protocol_filter/libraries
+/var/clearos/base/daemon/l7-filter.php

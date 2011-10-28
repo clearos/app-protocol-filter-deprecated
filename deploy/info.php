@@ -48,3 +48,7 @@ $app['core_directory_manifest'] = array(
     '/var/clearos/protocol_filter/backup/' => array(),
 );
 
+$app['core_file_manifest'] = array(
+    'l7-filter.php'=> array('target' => '/var/clearos/base/daemon/l7-filter.php'),
+);
+
