@@ -47,9 +47,9 @@ $buttons = array(form_submit_update('submit', 'high'));
 ///////////////////////////////////////////////////////////////////////////////
 
 $headers = array(
+    lang('base_category'),
     lang('protocol_filter_protocol'),
     lang('base_description'),
-    lang('base_category'),
 );
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -61,9 +61,9 @@ foreach ($protocols as $name => $details) {
     $item['name'] = 'protocols[' . $name . ']';
     $item['state'] = $details['enabled'];
     $item['details'] = array(
-        "<a href='" . $details['url'] . "'>" . $details['name'] . "</a>", // FIXME
+        $details['category_text'],
+        "<a href='" . $details['url'] . "'>" . $details['name'] . "</a>", // FIXME -- add redirect on clearcenter.com
         $details['description'],
-        $details['category'],  // FIXME
     );
 
     $items[] = $item;
@@ -73,13 +73,16 @@ foreach ($protocols as $name => $details) {
 // List table
 ///////////////////////////////////////////////////////////////////////////////
 
+$options['grouping'] = TRUE;
+
 echo form_open('protocol_filter/settings');
 
 echo list_table(
     lang('protocol_filter_protocols'),
     $buttons,
     $headers,
-    $items
+    $items,
+	$options
 );
 
 echo form_close();

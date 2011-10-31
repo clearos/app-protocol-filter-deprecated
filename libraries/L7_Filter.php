@@ -110,11 +110,9 @@ class L7_Filter extends Daemon
     ///////////////////////////////////////////////////////////////////////////////
 
     protected $protocols = array();
-    protected $categories = array();
-
     protected $patterns = array();
-    protected $groups = array();
-    protected $supported_groups = array();
+    protected $categories = array();
+    protected $supported_categories = array();
 
     ///////////////////////////////////////////////////////////////////////////////
     // M E T H O D S
@@ -138,39 +136,39 @@ class L7_Filter extends Daemon
             'chat' => lang('protocol_filter_category_chat'),
             'document_retrieval' => lang('protocol_filter_category_document_retrieval'),
             'file' => lang('protocol_filter_category_file'),
-            'game' => lang('protocol_filter_category_game'),
-            'all' => lang('protocol_filter_category_all'),
+            'game' => lang('protocol_filter_category_games'),
             'mail' => lang('protocol_filter_category_mail'),
             'monitoring' => lang('protocol_filter_category_monitoring'),
             'networking' => lang('protocol_filter_category_networking'),
             'p2p' => lang('protocol_filter_category_p2p'),
-            'printer' => lang('protocol_filter_category_printer'),
+            'printer' => lang('protocol_filter_category_printing'),
             'remote_access' => lang('protocol_filter_category_remote_access'),
             'streaming_media' => lang('protocol_filter_category_streaming_media'),
-            'utiltity' => lang('protocol_filter_category_utility'),
+            'utility' => lang('protocol_filter_category_utilities'),
             'voip' => lang('protocol_filter_category_voip'),
-            'worm' => lang('protocol_filter_category_worm'),
+            'worm' => lang('protocol_filter_category_virus'),
         );
 
-        $this->supported_groups = array(
+        $this->all_categories = array(
             'chat' => lang('protocol_filter_category_chat'),
             'document_retrieval' => lang('protocol_filter_category_document_retrieval'),
             'file' => lang('protocol_filter_category_file'),
-            'game' => lang('protocol_filter_category_game'),
-            'all' => lang('protocol_filter_category_all'),
+            'game' => lang('protocol_filter_category_games'),
             'mail' => lang('protocol_filter_category_mail'),
             'monitoring' => lang('protocol_filter_category_monitoring'),
             'networking' => lang('protocol_filter_category_networking'),
             'p2p' => lang('protocol_filter_category_p2p'),
-            'printer' => lang('protocol_filter_category_printer'),
+            'printer' => lang('protocol_filter_category_printing'),
             'remote_access' => lang('protocol_filter_category_remote_access'),
             'secure' => lang('protocol_filter_category_secure'),
             'streaming_audio' => lang('protocol_filter_category_streaming_audio'),
             'streaming_video' => lang('protocol_filter_category_streaming_video'),
+            'streaming_media' => lang('protocol_filter_category_streaming_media'),
             'time_synchronization' => lang('protocol_filter_category_time_synchronization'),
+            'utility' => lang('protocol_filter_category_utilities'),
             'version_control' => lang('protocol_filter_category_version_control'),
             'voip' => lang('protocol_filter_category_voip'),
-            'worm' => lang('protocol_filter_category_worm'),
+            'worm' => lang('protocol_filter_category_virus'),
         );
     }
 
@@ -191,9 +189,9 @@ class L7_Filter extends Daemon
     }
 
     /**
-     * Returns associative array of l7-filter groups.
+     * Returns associative array of l7-filter categories.
      *
-     * @return array protocol filter groups
+     * @return array protocol filter categories
      * @throws Engine_Exception
      */
 
@@ -346,26 +344,22 @@ class L7_Filter extends Daemon
     }
 
     /**
-     * Translates l7-filter groups to localized strings.
-     *
-     * @param array $groups raw group list
+     * Translates l7-filter categories to localized strings.
      *
      * @return array localized group information
      * @throws Engine_Exception
      */
 
-    protected function _localize_groups($groups)
+    protected function _localize_protocol_categories()
     {
         clearos_profile(__METHOD__, __LINE__);
 
-        $translated_groups = array();
-
-        foreach ($groups as $group) {
-            if (array_key_exists($group, $this->supported_groups))
-                $translated_groups[$group] = $this->supported_groups[$group];
-        }
-
-        return $translated_groups;
+		foreach ($this->protocols as $protocol => $details) {
+			if (empty($this->all_categories[$details['category']]))
+				$this->protocols[$protocol]['category_text'] = $details['category'];
+			else
+				$this->protocols[$protocol]['category_text'] = $this->all_categories[$details['category']];
+		}
     }
 
     /**
@@ -430,7 +424,7 @@ class L7_Filter extends Daemon
         // Load from cache if available
         //-----------------------------
 
-        // FIXME
+        // TODO
         // if ($cache->exists() && ($cache->last_modified() > $rpm->get_install_time())) {
 /*
         if ($cache->exists()) {
@@ -513,6 +507,8 @@ class L7_Filter extends Daemon
                     $this->protocols[$key]['wiki'] = NULL;
             }
         }
+
+		$this->_localize_protocol_categories();
 
         ksort($this->protocols);
 
