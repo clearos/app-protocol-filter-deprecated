@@ -16,13 +16,12 @@ clearos_load_language('protocol_filter');
 ///////////////////////////////////////////////////////////////////////////////
 // C O N F I G L E T
 ///////////////////////////////////////////////////////////////////////////////
-// FIXME: verify these settings
 
 $configlet = array(
-	'title' => lang('protocol_filter_app_name'),
-	'package' => 'l7-filter-userspace',
-	'process_name' => 'pptpd',
-	'pid_file' => '/var/run/l7-filter.pid',
-	'reloadable' => FALSE,
-	'url' => '/app/protocol_filter'
+    'title' => lang('protocol_filter_app_name'),
+    'package' => 'l7-filter-userspace',
+    'process_name' => 'l7-filter',
+    'pid_file' => '/var/run/l7-filter.pid',
+    'reloadable' => FALSE,
+    'url' => '/app/protocol_filter'
 );

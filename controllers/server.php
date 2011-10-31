@@ -1,11 +1,11 @@
 <?php
 
 /**
- * Protocol filter pattern view.
+ * Protocol filter daemon controller.
  *
  * @category   Apps
  * @package    Protocol_Filter
- * @subpackage Views
+ * @subpackage Controllers
  * @author     ClearFoundation <developer@clearfoundation.com>
  * @copyright  2011 ClearFoundation
  * @license    http://www.gnu.org/copyleft/gpl.html GNU General Public License version 3 or later
@@ -25,61 +25,43 @@
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>.  
-//  
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+//
 ///////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
-// Load dependencies
+// B O O T S T R A P
 ///////////////////////////////////////////////////////////////////////////////
 
-$this->lang->load('base');
-$this->lang->load('protocol_filter');
+$bootstrap = getenv('CLEAROS_BOOTSTRAP') ? getenv('CLEAROS_BOOTSTRAP') : '/usr/clearos/framework/shared';
+require_once $bootstrap . '/bootstrap.php';
 
 ///////////////////////////////////////////////////////////////////////////////
-// Buttons
+// D E P E N D E N C I E S
 ///////////////////////////////////////////////////////////////////////////////
 
-$buttons = array(form_submit_update('submit', 'high'));
+require clearos_app_base('base') . '/controllers/daemon.php';
 
 ///////////////////////////////////////////////////////////////////////////////
-// Headers
+// C L A S S
 ///////////////////////////////////////////////////////////////////////////////
 
-$headers = array(
-    lang('protocol_filter_protocol'),
-    lang('base_description'),
-    lang('base_category'),
-);
+/**
+ * Protocol filter daemon controller.
+ *
+ * @category   Apps
+ * @package    Protocol_Filter
+ * @subpackage Controllers
+ * @author     ClearFoundation <developer@clearfoundation.com>
+ * @copyright  2011 ClearFoundation
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU General Public License version 3 or later
+ * @link       http://www.clearfoundation.com/docs/developer/apps/protocol_filter/
+ */
 
-///////////////////////////////////////////////////////////////////////////////
-// Items
-///////////////////////////////////////////////////////////////////////////////
-
-foreach ($protocols as $name => $details) {
-    $item['title'] = $name;
-    $item['name'] = 'protocols[' . $name . ']';
-    $item['state'] = $details['enabled'];
-    $item['details'] = array(
-        "<a href='" . $details['url'] . "'>" . $details['name'] . "</a>", // FIXME
-        $details['description'],
-        $details['category'],  // FIXME
-    );
-
-    $items[] = $item;
+class Server extends Daemon
+{
+    function __construct()
+    {
+        parent::__construct('l7-filter', 'protocol_filter');
+    }
 }
-
-///////////////////////////////////////////////////////////////////////////////
-// List table
-///////////////////////////////////////////////////////////////////////////////
-
-echo form_open('protocol_filter/settings');
-
-echo list_table(
-    lang('protocol_filter_protocols'),
-    $buttons,
-    $headers,
-    $items
-);
-
-echo form_close();

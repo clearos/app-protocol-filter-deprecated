@@ -55,7 +55,7 @@ class Protocol_Filter extends ClearOS_Controller
 
     function index()
     {
-        $views = array('protocol_filter/exceptions', 'protocol_filter/settings');
+        $views = array('protocol_filter/server', 'protocol_filter/exceptions', 'protocol_filter/settings');
 
         $this->page->view_forms($views, lang('protocol_filter_app_name'));
     }
