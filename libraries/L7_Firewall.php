@@ -150,16 +150,16 @@ class L7_Firewall extends Firewall
     }
 
     /**
-     * Sets the status of a protocol exception rule.
+     * Sets the state of a protocol exception rule.
      *
-     * @param boolean $status status
-     * @param string  $ip     IP address
+     * @param boolean $state state
+     * @param string  $ip    IP address
      *
      * @return void
      * @throws Engine_Exception
      */
 
-    public function set_exception_status($status, $ip)
+    public function set_exception_state($state, $ip)
     {
         clearos_profile(__METHOD__, __LINE__);
 
@@ -175,7 +175,7 @@ class L7_Firewall extends Firewall
 
         $this->delete_rule($rule);
 
-        if ($status)
+        if ($state)
             $rule->enable();
         else
             $rule->disable();

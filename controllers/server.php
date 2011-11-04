@@ -42,6 +42,10 @@ require_once $bootstrap . '/bootstrap.php';
 
 require clearos_app_base('base') . '/controllers/daemon.php';
 
+use \clearos\apps\firewall\Firewall as Firewall;
+
+clearos_load_library('firewall/Firewall');
+
 ///////////////////////////////////////////////////////////////////////////////
 // C L A S S
 ///////////////////////////////////////////////////////////////////////////////
@@ -63,5 +67,37 @@ class Server extends Daemon
     function __construct()
     {
         parent::__construct('l7-filter', 'protocol_filter');
+    }
+
+    /**
+     * Restarts firewall after daemon start.
+     *
+     * The firewall must be restarted after l7-filter is started.
+     *
+     * @return void
+     */
+
+    public function start()
+    {
+        parent::start();
+
+        $firewall = new Firewall();
+        $firewall->Restart();
+    }
+
+    /**
+     * Restarts firewall after daemon stop.
+     *
+     * The firewall must be restarted after l7-filter is stopped.
+     *
+     * @return void
+     */
+
+    public function stop()
+    {
+        parent::stop();
+
+        $firewall = new Firewall();
+        $firewall->Restart();
     }
 }

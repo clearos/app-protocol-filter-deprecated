@@ -27,10 +27,12 @@ $app['subcategory'] = lang('base_subcategory_protocol_filter');
 
 $app['controllers']['protocol_filter']['title'] = lang('protocol_filter_app_name');
 $app['controllers']['exceptions']['title'] = lang('protocol_filter_exceptions');
+$app['controllers']['settings']['title'] = lang('base_settings');
 
 /////////////////////////////////////////////////////////////////////////////
 // Packaging
 /////////////////////////////////////////////////////////////////////////////
+// FIXME: how to handle empty l7-filter.conf and daemon start/stop
 
 $app['requires'] = array(
     'app-network',
@@ -39,8 +41,9 @@ $app['requires'] = array(
 $app['core_requires'] = array(
     'app-network-core',
     'app-firewall-core',
+    'clearsync',
     'l7-filter-userspace >= 0.12',
-    'l7-protocols- >= 0.12',
+    'l7-protocols >= 0.12',
 );
 
 $app['core_directory_manifest'] = array(
@@ -50,5 +53,7 @@ $app['core_directory_manifest'] = array(
 
 $app['core_file_manifest'] = array(
     'l7-filter.php'=> array('target' => '/var/clearos/base/daemon/l7-filter.php'),
+    'filewatch-protocol-filter.conf'=> array('target' => '/etc/clearsync.d/filewatch-protocol-filter.conf'),
+    'protocol_filter.conf'=> array('target' => '/etc/clearos/protocol_filter.conf'),
 );
 

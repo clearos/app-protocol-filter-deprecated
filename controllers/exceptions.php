@@ -184,7 +184,7 @@ class Exceptions extends ClearOS_Controller
         try {
             $this->load->library('protocol_filter/L7_Firewall');
 
-            $this->l7_firewall->set_allow_port_status(FALSE, $protocol, $port);
+            $this->l7_firewall->set_exception_state(FALSE, $ip);
             $this->l7_firewall->reset(TRUE);
 
             $this->page->set_status_disabled();
@@ -208,7 +208,7 @@ class Exceptions extends ClearOS_Controller
         try {
             $this->load->library('protocol_filter/L7_Firewall');
 
-            $this->l7_firewall->set_exception_status(TRUE, $ip);
+            $this->l7_firewall->set_exception_state(TRUE, $ip);
             $this->l7_firewall->reset(TRUE);
 
             $this->page->set_status_enabled();

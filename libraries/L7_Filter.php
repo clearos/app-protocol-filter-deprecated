@@ -52,6 +52,7 @@ clearos_load_language('protocol_filter');
 // D E P E N D E N C I E S
 ///////////////////////////////////////////////////////////////////////////////
 
+
 // Classes
 //--------
 
@@ -237,9 +238,12 @@ class L7_Filter extends Daemon
 
         foreach ($contents as $mark) {
             // 0     0 DROP       all  --  *      *       0.0.0.0/0            0.0.0.0/0           MARK match 0x1c
-            if (!preg_match('/^\s*(\dMG]+)\s+(\dMG]+)\s+DROP.*match\s+0x([[:xdigit:]]+)$/', chop($mark), $matches)) continue;
+            if (!preg_match('/^\s*(\dMG]+)\s+(\dMG]+)\s+DROP.*match\s+0x([[:xdigit:]]+)$/', chop($mark), $matches)) 
+                continue;
+
             foreach ($this->protocols as $key => $pattern) {
-                if ($pattern['mark'] != hexdec($matches[3])) continue;
+                if ($pattern['mark'] != hexdec($matches[3]))
+                    continue;
                 $this->protocols[$key]['packets'] = $matches[1];
                 $this->protocols[$key]['bytes'] = $matches[2];
                 break;
@@ -248,100 +252,81 @@ class L7_Filter extends Daemon
     }
 
     /**
-     * Enables an l7-filter protocol pattern.
+     * Sets protocol list.
      *
-     * @param string $protocol protocol name
+     * @param array $protocols protocol list
      *
      * @return void
-     * @throws Engine_Exception
+     * @throws Engine_Exception, Validation_Exception
      */
 
-    public function enable_protocol($protocol)
+    public function set_protocols($protocols)
     {
         clearos_profile(__METHOD__, __LINE__);
+
+        Validation_Exception::is_valid($this->validate_protocols($protocols));
 
         $this->_load_protocol_data();
 
         foreach ($this->protocols as $key => $pattern) {
-            if (strcasecmp($pattern['name'], $protocol))
-                continue;
-
-            $this->protocols[$key]['enabled'] = TRUE;
-            $this->_save_configuration();
-            return;
+            if (in_array($key, $protocols))
+                $this->protocols[$key]['enabled'] = TRUE;
+            else
+                $this->protocols[$key]['enabled'] = FALSE;
         }
 
-        throw new Validation_Exception(lang('protocol_filter_protocol_invalid'));
+        $this->_save_configuration();
+    }
+
+    public function set_running_state($state)
+    {
+        $firewall = new Firewall();
+        $firewall->Restart();
+
+        parent::set_running_state($state);
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////
+    // V A L I D A T I O N
+    ///////////////////////////////////////////////////////////////////////////////
+
+    /**
+     * Validates protocol.
+     *
+     * @param string $protocol protocol
+     *
+     * @return string error message if protocol is invalid
+     */
+
+    public function validate_protocol($protocol)
+    {
+        clearos_profile(__METHOD__, __LINE__);
+
+        if (! array_key_exists($protocol, $this->protocols))
+            return lang('protocol_filter_protocol_invalid');
     }
 
     /**
-     * Disables an l7-filter protocol pattern.
+     * Validates protocol list.
      *
-     * @param string $protocol protocol name
+     * @param array $protocols protocol list
      *
-     * @return void
-     * @throws Engine_Exception
+     * @return string error message if protocol is invalid
      */
 
-    public function disable_protocol($protocol)
+    public function validate_protocols($protocols)
     {
         clearos_profile(__METHOD__, __LINE__);
 
-        $this->_load_protocol_data();
-
-        foreach ($this->protocols as $key => $pattern) {
-            if (strcasecmp($pattern['name'], $protocol))
-                continue;
-
-            $this->protocols[$key]['enabled'] = FALSE;
-            $this->_save_configuration();
-            return;
+        foreach ($protocols as $protocol) {
+            if ($error_message = $this->validate_protocol($protocol))
+                return $error_message;
         }
-
-        throw new Validation_Exception(lang('protocol_filter_protocol_invalid'));
     }
 
     ///////////////////////////////////////////////////////////////////////////////
     // P R I V A T E  M E T H O D S
     ///////////////////////////////////////////////////////////////////////////////
-
-    /**
-     * Saves l7-filter configuration
-     *
-     * @return void
-     * @throws Engine_Exception
-     */
-
-    protected function _save_configuration()
-    {
-        clearos_profile(__METHOD__, __LINE__);
-
-        $protocols = array();
-
-        foreach ($this->protocols as $pattern) {
-            if ($pattern['enabled'] !== TRUE)
-                continue;
-            $protocols[] = $pattern['name'];
-        }
-
-        $mark = 3;
-        $contents = array();
-
-        sort($protocols, SORT_STRING);
-
-        foreach ($protocols as $name)
-            $contents[] = sprintf('%-40s %-3d', $name, $mark++);
-
-        $config_file = new File(self::FILE_CONFIG, TRUE);
-        $config_file->dump_contents_from_array($contents);
-
-        /*
-        FIXME: move to controller
-        if ($this->GetBootState()) $this->Restart();
-        $fw = new Firewall();
-        $fw->Restart();
-        */
-    }
 
     /**
      * Translates l7-filter categories to localized strings.
@@ -354,12 +339,12 @@ class L7_Filter extends Daemon
     {
         clearos_profile(__METHOD__, __LINE__);
 
-		foreach ($this->protocols as $protocol => $details) {
-			if (empty($this->all_categories[$details['category']]))
-				$this->protocols[$protocol]['category_text'] = $details['category'];
-			else
-				$this->protocols[$protocol]['category_text'] = $this->all_categories[$details['category']];
-		}
+        foreach ($this->protocols as $protocol => $details) {
+            if (empty($this->all_categories[$details['category']]))
+                $this->protocols[$protocol]['category_text'] = $details['category'];
+            else
+                $this->protocols[$protocol]['category_text'] = $this->all_categories[$details['category']];
+        }
     }
 
     /**
@@ -424,9 +409,9 @@ class L7_Filter extends Daemon
         // Load from cache if available
         //-----------------------------
 
-        // TODO
-        // if ($cache->exists() && ($cache->last_modified() > $rpm->get_install_time())) {
-/*
+        // TODO: re-enable cache implmentation if speed up is required
+        /*
+        if ($cache->exists() && ($cache->last_modified() > $rpm->get_install_time())) {
         if ($cache->exists()) {
             $contents = $cache->get_contents();
 
@@ -436,9 +421,11 @@ class L7_Filter extends Daemon
                 return;
             }
         }
-*/
+        */
 
-        // FIXME
+        // Grab URL for redirect
+        //----------------------
+
         $product = new Product();
         $redirect_url = $product->get_redirect_url();
 
@@ -508,7 +495,7 @@ class L7_Filter extends Daemon
             }
         }
 
-		$this->_localize_protocol_categories();
+        $this->_localize_protocol_categories();
 
         ksort($this->protocols);
 
@@ -517,8 +504,40 @@ class L7_Filter extends Daemon
         if ($cache->exists())
             $cache->delete();
 
-        $cache->create('webconfig', 'webconfig', 0644);
+        $cache->create('root', 'root', 0644);
         $cache->add_lines(serialize($this->protocols));
         $this->_load_configuration($this->protocols);
+    }
+
+    /**
+     * Saves l7-filter configuration
+     *
+     * @return void
+     * @throws Engine_Exception
+     */
+
+    protected function _save_configuration()
+    {
+        clearos_profile(__METHOD__, __LINE__);
+
+        $protocols = array();
+
+        foreach ($this->protocols as $protocol => $details) {
+            if ($details['enabled'] !== TRUE)
+                continue;
+
+            $protocols[] = $protocol;
+        }
+
+        $mark = 3;
+        $contents = array();
+
+        sort($protocols, SORT_STRING);
+
+        foreach ($protocols as $name)
+            $contents[] = sprintf('%-40s %-3d', $name, $mark++);
+
+        $config_file = new File(self::FILE_CONFIG, TRUE);
+        $config_file->dump_contents_from_array($contents);
     }
 }

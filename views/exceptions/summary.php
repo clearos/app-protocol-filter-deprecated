@@ -57,7 +57,7 @@ $anchors = array(anchor_add('/app/protocol_filter/exceptions/add'));
 ///////////////////////////////////////////////////////////////////////////////
 
 foreach ($exceptions as $number => $details) {
-    $state = ($rule['enabled']) ? 'disable' : 'enable';
+    $state = ($details['enabled']) ? 'disable' : 'enable';
     $state_anchor = 'anchor_' . $state;
 
     $item['title'] = $details['name'] . " / " .  $details['ip'];

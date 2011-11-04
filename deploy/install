@@ -18,3 +18,8 @@ cp /usr/clearos/apps/protocol_filter/deploy/l7-filter.conf /etc/l7-filter/l7-fil
 
 logger -p local6.notice -t installer "app-protocol-filter-core - enabling protocol filter"
 /sbin/chkconfig l7-filter on
+
+# Trigger clearsync
+#------------------
+
+/sbin/service clearsyncd condrestart

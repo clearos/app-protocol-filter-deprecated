@@ -62,7 +62,7 @@ foreach ($protocols as $name => $details) {
     $item['state'] = $details['enabled'];
     $item['details'] = array(
         $details['category_text'],
-        "<a href='" . $details['url'] . "'>" . $details['name'] . "</a>", // FIXME -- add redirect on clearcenter.com
+        "<a href='" . $details['url'] . "' target='_blank'>" . $details['name'] . "</a>",
         $details['description'],
     );
 

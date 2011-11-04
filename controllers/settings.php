@@ -61,6 +61,21 @@ class Settings extends ClearOS_Controller
         $this->load->library('protocol_filter/L7_Filter');
         $this->lang->load('protocol_filter');
 
+        // Handle form submit
+        //-------------------
+
+        if ($this->input->post('submit')) {
+             try {
+                $this->l7_filter->set_protocols(array_keys($this->input->post('protocols')));
+                $this->l7_filter->reset(TRUE);
+
+                $this->page->set_status_updated();
+            } catch (Exception $e) {
+                $this->page->view_exception($e);
+                return;
+            }
+        }
+
         // Load view data
         //---------------
 
