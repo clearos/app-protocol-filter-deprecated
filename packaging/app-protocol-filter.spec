@@ -1,7 +1,7 @@
 
 Name: app-protocol-filter
 Group: ClearOS/Apps
-Version: 5.9.9.5
+Version: 6.1.0.beta2
 Release: 1%{dist}
 Summary: Protocol Filter
 License: GPLv3
