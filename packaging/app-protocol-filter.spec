@@ -23,7 +23,6 @@ License: LGPLv3
 Requires: app-base-core
 Requires: app-network-core
 Requires: app-firewall-core
-Requires: clearsync
 Requires: l7-filter-userspace >= 0.12
 Requires: l7-protocols >= 0.12
 
@@ -42,7 +41,6 @@ cp -r * %{buildroot}/usr/clearos/apps/protocol_filter/
 
 install -d -m 0755 %{buildroot}/var/clearos/protocol_filter
 install -d -m 0755 %{buildroot}/var/clearos/protocol_filter/backup/
-install -D -m 0644 packaging/filewatch-protocol-filter.conf %{buildroot}/etc/clearsync.d/filewatch-protocol-filter.conf
 install -D -m 0644 packaging/l7-filter.php %{buildroot}/var/clearos/base/daemon/l7-filter.php
 install -D -m 0644 packaging/protocol_filter.conf %{buildroot}/etc/clearos/protocol_filter.conf
 
@@ -89,6 +87,5 @@ exit 0
 /usr/clearos/apps/protocol_filter/deploy
 /usr/clearos/apps/protocol_filter/language
 /usr/clearos/apps/protocol_filter/libraries
-/etc/clearsync.d/filewatch-protocol-filter.conf
 /var/clearos/base/daemon/l7-filter.php
 /etc/clearos/protocol_filter.conf
