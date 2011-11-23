@@ -2,7 +2,7 @@
 
 $lang['protocol_filter_protocols'] = 'Protocols';
 $lang['protocol_filter_app_name'] = 'Protocol Filter';
-$lang['protocol_filter_app_description'] = 'Protocol Filter description'; // FIXME
+$lang['protocol_filter_app_description'] = 'The Protocol Filter is an application layer packet classifier.  The service attempts to identify an application as data packets pass through the gateway and classify them according to known protocols.  If successfully identified, user sessions can be blocked based on an administrator\'s preference and/or policy.';
 $lang['protocol_filter_exception_list'] = 'Exception List';
 $lang['protocol_filter_exception'] = 'Exception';
 $lang['protocol_filter_exceptions'] = 'Exceptions';
