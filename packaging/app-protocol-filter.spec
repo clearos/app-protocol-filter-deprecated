@@ -14,7 +14,7 @@ Requires: app-base
 Requires: app-network
 
 %description
-Protocol Filter description
+The Protocol Filter is an application layer packet classifier.  The service attempts to identify an application as data packets pass through the gateway and classify them according to known protocols.  If successfully identified, user sessions can be blocked based on an administrator's preference and/or policy.
 
 %package core
 Summary: Protocol Filter - APIs and install
@@ -27,7 +27,7 @@ Requires: l7-filter-userspace >= 0.12
 Requires: l7-protocols >= 0.12
 
 %description core
-Protocol Filter description
+The Protocol Filter is an application layer packet classifier.  The service attempts to identify an application as data packets pass through the gateway and classify them according to known protocols.  If successfully identified, user sessions can be blocked based on an administrator's preference and/or policy.
 
 This package provides the core API and libraries.
 
