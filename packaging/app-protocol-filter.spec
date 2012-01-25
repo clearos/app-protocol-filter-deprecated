@@ -1,7 +1,8 @@
 
 Name: app-protocol-filter
 Group: ClearOS/Apps
-Version: 6.2.0.beta3
+Epoch: 1
+Version: 1.0.1
 Release: 1%{dist}
 Summary: Protocol Filter
 License: GPLv3
@@ -9,7 +10,7 @@ Packager: ClearFoundation
 Vendor: ClearFoundation
 Source: %{name}-%{version}.tar.gz
 Buildarch: noarch
-Requires: %{name}-core = %{version}-%{release}
+Requires: %{name}-core = 1:%{version}-%{release}
 Requires: app-base
 Requires: app-network
 
