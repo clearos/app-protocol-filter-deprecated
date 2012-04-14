@@ -1,7 +1,7 @@
 
 Name: app-protocol-filter
 Epoch: 1
-Version: 1.0.10
+Version: 1.1.0
 Release: 1%{dist}
 Summary: Protocol Filter
 License: GPLv3
@@ -16,7 +16,7 @@ Requires: app-network
 The Protocol Filter is an application layer packet classifier.  The service attempts to identify an application as data packets pass through the gateway and classify them according to known protocols.  If successfully identified, user sessions can be blocked based on an administrator's preference and/or policy.
 
 %package core
-Summary: Protocol Filter - APIs and install
+Summary: Protocol Filter - Core
 License: LGPLv3
 Group: ClearOS/Libraries
 Requires: app-base-core
