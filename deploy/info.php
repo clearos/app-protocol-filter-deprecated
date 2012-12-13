@@ -55,3 +55,8 @@ $app['core_file_manifest'] = array(
     'protocol_filter.conf'=> array('target' => '/etc/clearos/protocol_filter.conf'),
 );
 
+$app['delete_dependency'] = array(
+    'app-protocol-filter-core',
+    'l7-protocols',
+    'l7-filter-userspace'
+);
