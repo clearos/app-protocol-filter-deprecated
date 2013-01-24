@@ -1,7 +1,7 @@
 
 Name: app-protocol-filter
 Epoch: 1
-Version: 1.1.0
+Version: 1.4.15
 Release: 1%{dist}
 Summary: Protocol Filter
 License: GPLv3
@@ -21,7 +21,7 @@ License: LGPLv3
 Group: ClearOS/Libraries
 Requires: app-base-core
 Requires: app-network-core
-Requires: app-firewall-core
+Requires: app-firewall-core >= 1:1.4.15
 Requires: l7-filter-userspace >= 0.12
 Requires: l7-protocols >= 0.12
 

@@ -278,6 +278,14 @@ class L7_Filter extends Daemon
         $this->_save_configuration();
     }
 
+    /**
+     * Sets running state.
+     *
+     * @param boolean $state state
+     *
+     * @return void
+     */
+
     public function set_running_state($state)
     {
         $firewall = new Firewall();

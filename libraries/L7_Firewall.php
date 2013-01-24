@@ -124,7 +124,7 @@ class L7_Firewall extends Firewall
         $rule->set_address($ip);
         $rule->set_flags(Rule::L7FILTER_BYPASS | Rule::ENABLED);
 
-        $this->add_rule($rule);
+        $this->_add_rule($rule);
     }
 
     /**
@@ -146,7 +146,7 @@ class L7_Firewall extends Firewall
 
         $rule->set_address($ip);
         $rule->set_flags(Rule::L7FILTER_BYPASS | $network);
-        $this->delete_rule($rule);
+        $this->_delete_rule($rule);
     }
 
     /**
@@ -170,17 +170,17 @@ class L7_Firewall extends Firewall
         $rule->set_address($ip);
         $rule->set_flags(Rule::L7FILTER_BYPASS);
 
-        if (!($rule = $this->find_rule($rule)))
+        if (!($rule = $this->_find_rule($rule)))
             return;
 
-        $this->delete_rule($rule);
+        $this->_delete_rule($rule);
 
         if ($state)
             $rule->enable();
         else
             $rule->disable();
 
-        $this->add_rule($rule);
+        $this->_add_rule($rule);
     }
 
     /**
@@ -200,7 +200,7 @@ class L7_Firewall extends Firewall
 
         $exceptions = array();
 
-        $rules = $this->get_rules();
+        $rules = $this->_get_rules();
 
         foreach ($rules as $rule) {
             if (!($rule->get_flags() & Rule::L7FILTER_BYPASS))
@@ -228,7 +228,7 @@ class L7_Firewall extends Firewall
     {
         clearos_profile(__METHOD__, __LINE__);
 
-        return $this->get_state('PROTOCOL_FILTERING');
+        return $this->_get_state('PROTOCOL_FILTERING');
     }
 
     /**
@@ -244,6 +244,6 @@ class L7_Firewall extends Firewall
     {
         clearos_profile(__METHOD__, __LINE__);
 
-        $this->set_state($state, 'PROTOCOL_FILTERING');
+        $this->_set_state($state, 'PROTOCOL_FILTERING');
     }
 }
