@@ -1,7 +1,7 @@
 
 Name: app-protocol-filter
 Epoch: 1
-Version: 1.4.20
+Version: 1.6.5
 Release: 1%{dist}
 Summary: Protocol Filter
 License: GPLv3
@@ -79,7 +79,6 @@ exit 0
 %files core
 %defattr(-,root,root)
 %exclude /usr/clearos/apps/protocol_filter/packaging
-%exclude /usr/clearos/apps/protocol_filter/tests
 %dir /usr/clearos/apps/protocol_filter
 %dir /var/clearos/protocol_filter
 %dir /var/clearos/protocol_filter/backup/
